@@ -1,0 +1,129 @@
+body{
+    background-color: pink;
+    font-family: "Lora", serif;
+}
+
+
+.container{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin: 0;
+    background-color: rgb(245, 242, 250);
+    border: 1px solid black;
+    border-radius: 10px;
+    height: 900px;
+    width: 500px;
+    padding-left: 20px;
+    margin-top: 70px;
+    overflow: hidden;
+}
+.container p{
+    color: rgb(163, 98, 123);
+    margin-bottom: 0;
+    justify-content: flex-start;
+}
+#current-time{
+    text-align: left;
+    width: 100%;
+    margin-bottom: 30px;
+}
+
+
+.top{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+.time-back h2{
+    color: rgb(163, 98, 123);
+    margin-bottom: 0;
+}
+.time-back h1{
+    color:rgb(92, 58, 49);
+    margin-top: 0;
+}
+.time-back{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+/* Hamburger menu button */
+.menu-btn {
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: rgb(92, 58, 49);
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 6px;
+    border: 1px solid transparent;
+    background-color: rgb(244, 232, 248);
+    border-radius: 60%;
+    transition: background 0.2s;
+}
+.menu-btn:hover {
+    background-color: rgba(163, 98, 123, 0.15);
+}
+
+.side-drawer {
+    position: absolute;
+    top: 0;
+    right: -100%;
+    width: 75%;
+    height: 100%;
+    background: #fff0f5;
+    box-shadow: -4px 0 16px rgba(0,0,0,0.12);
+    border-radius: 0 10px 10px 0;
+    z-index: 10;
+    transition: right 0.3s ease;
+    padding: 16px 0;
+    box-sizing: border-box;
+}
+.side-drawer.open {
+    right: 0;
+}
+
+.drawer-close {
+    display: block;
+    margin-left: auto;
+    margin-right: 16px;
+    margin-bottom: 12px;
+    background: none;
+    border: none;
+    font-size: 18px;
+    color: rgb(163, 98, 123);
+    cursor: pointer;
+}
+
+.drawer-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.drawer-menu li a {
+    display: block;
+    padding: 16px 24px;
+    color: rgb(92, 58, 49);
+    text-decoration: none;
+    font-family: "Lora", serif;
+    font-size: 16px;
+    transition: background 0.2s;
+}
+.drawer-menu li a:hover {
+    background-color: rgba(163, 98, 123, 0.15);
+}
+.sdpage img{
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-top: 16px;
+    filter: drop-shadow(0px 10px 20px rgba(0,0,0,0.1));
+    margin-left: 10px;
+    
+
+}

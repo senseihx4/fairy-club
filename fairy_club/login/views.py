@@ -1,0 +1,151 @@
+from django.http import HttpResponse
+from django.shortcuts import render
+from .forms import MembershipTypeForm
+from django.contrib.auth import login
+from .forms import Fairytype, UserForm, ProfileForm
+from .models import User
+from django.contrib import messages
+from django.shortcuts import redirect
+from django.core.mail import send_mail
+from django.conf import settings
+import random
+from django.shortcuts import  get_object_or_404
+
+def home_page(request):
+    return render(request, 'home.html')
+
+def signup(request):
+    form = UserForm()
+    return render(request, 'signup.html', {'form': form})
+
+def register_user(request):
+    if request.method == 'POST':
+        form = UserForm(request.POST)
+        
+        email = request.POST.get('email')
+        if User.objects.filter(email=email).exists():
+             messages.error(request, 'Email already exists.')
+             return render(request, 'signup.html', {'form': form})
+        
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.set_password(form.cleaned_data['password']) 
+            user.verification_token = str(random.randint(100000, 999999))
+            user.is_verified = False
+            user.save() 
+            request.session['verify_email'] = user.email
+
+            send_mail(
+                subject='Your Fairy Club Verification Code',
+                message=f'Your OTP is: {user.verification_token}\n\nThis code is valid for one use only.',
+                from_email=settings.EMAIL_HOST_USER,
+                recipient_list=[user.email],
+                fail_silently=False,
+            )
+
+            return redirect('verify_otp') 
+                
+    else:
+        form = UserForm()
+        
+               
+    return render(request, 'signup.html', {'form': form}) 
+
+
+
+def verify_otp(request):
+    email = request.session.get('verify_email')
+
+    if not email:
+        return HttpResponse("Session expired. Please signup again.")
+
+    user = User.objects.filter(email=email).first()
+
+    if not user:
+        return HttpResponse("User not found.")
+
+    if request.method == "POST":
+        entered_otp = request.POST.get('otp')
+    
+        if entered_otp == user.verification_token:
+            user.is_verified= True
+            user.verification_token = None
+            user.save()
+            login(request, user)
+
+            return redirect('create_profile')
+
+        else:
+            return HttpResponse("Invalid OTP")
+
+    return render(request, "otp.html")
+
+def create_profile(request):
+    form = ProfileForm(request.POST or None, instance=request.user)
+    if form.is_valid():
+        form.save()
+        return redirect('select_court')
+    return render(request, 'create_profile.html', {'form': form})
+
+def select_court(request):
+    form = Fairytype(request.POST or None, instance=request.user)
+    if form.is_valid():
+        form.save()
+        return redirect('plan')
+    return render(request, 'select_court.html', {'form': form})
+def plan(request):
+    form = MembershipTypeForm(request.POST or None, instance=request.user)
+    if form.is_valid():
+        selected_type = form.cleaned_data['membership_type']
+        if selected_type == 1:
+            return redirect('fairy_time')
+        elif selected_type == 2:
+            return redirect('fairy_circle')
+        elif selected_type == 3:
+            return redirect('fairy_world')
+
+    return render(request, 'plan.html', {'form': form})
+
+def fairy_time(request):
+    return render(request, 'fairy_time.html')
+
+def fairy_circle(request):
+    return render(request, 'fairy_circle.html')
+
+def fairy_world(request):
+    return render(request, 'fairy_world.html')
+
+
+def login_user(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+
+        user = User.objects.filter(email=email).first()
+
+        if user and user.check_password(password):
+            if user.is_verified:
+                login(request, user)
+                return redirect('main_page')
+            else:
+                messages.error(request, 'Account not verified. Please check your email for the OTP.')
+        else:
+            messages.error(request, 'Invalid email or password.')
+
+    return render(request, 'login_user.html')
+
+def main_page(request):
+    return render(request, 'main_page.html')
+
+def edit_profile(request):
+    profile = get_object_or_404(User, id=request.user.id)
+    form = ProfileForm(request.POST or None, request.FILES or None, instance=profile)
+    if form.is_valid():
+        form.save()
+        return redirect('main_page')
+
+    return render(request, 'edit_profile.html', {'form': form})
+
+
+def manage_subscription(request):
+    return render(request, 'manage_subscription.html')

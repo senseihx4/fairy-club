@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% load static %}
+
+    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'members/home.css' %}">
+
+    <title>Fairy Club</title>
+
+    <script>
+        function updateTime() {
+            document.getElementById('current-time').textContent = new Date().toLocaleTimeString();
+        }
+        window.onload = function() {
+            updateTime();
+            setInterval(updateTime, 1000);
+        };
+    </script>
+</head>
+
+<body>
+
+<div class="container">
+
+    
+    <div class="top">
+        <p id="current-time"></p>
+    </div>
+
+    
+    <div class="logo">
+        <h1>Step Into Your</h1>
+        <h1>Fairy World</h1>
+        <p class="subtitle">Open the doors of magic.</p>
+    </div>
+
+   
+    <div class="auth-links">
+        <a href="{% url 'login_user' %}">
+            <img src="{% static 'members/images/signin .png' %}" alt="Sign In">
+        </a>
+    </div>
+
+    
+    <div class="auth-links-star">
+        <a href="{% url 'signup' %}">
+            <img src="{% static 'members/images/signup.png' %}" alt="Sign Up">
+        </a>
+    </div>
+
+</div>
+
+</body>
+</html>

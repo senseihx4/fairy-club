@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+ {% load static %}
+  
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+   <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+   <link rel="stylesheet" href="{% static 'members/main_page.css' %}">
+    <title>create profile</title>
+    <script>
+        function updateTime() {
+            document.getElementById('current-time').textContent = new Date().toLocaleTimeString();
+        }
+        window.onload = function() { updateTime(); setInterval(updateTime, 1000); };
+
+        function openMenu() {
+            document.getElementById('side-drawer').classList.add('open');
+        }
+        function closeMenu() {
+            document.getElementById('side-drawer').classList.remove('open');
+        }
+    </script>
+</head>
+
+<body>
+<div class="container">
+    <div class="top">
+        <p id="current-time"></p>
+        <div class="time-back">
+           <div>
+             <h2>Hello, &#128075</h2>
+              <h1 id="name">{{ request.user.child_name}}</h1>
+            </div>
+            <button class="menu-btn" onclick="openMenu()">&#9776;</button>
+        </div>
+    </div>
+
+    <div class="side-drawer" id="side-drawer">
+        <button class="drawer-close" onclick="closeMenu()">&#10005;</button>
+        <ul class="drawer-menu">
+            <li><a href="{% url 'edit_profile' %}">&#9998; Edit Profile</a></li>
+            <li><a href="{% url 'manage_subscription' %}">&#11088; Manage Your Subscription</a></li>
+            <li><a href="{% url 'home_page' %}">&#128682; Logout</a></li>
+        </ul>
+    </div>
+    <div class="sdpage">
+        <img src="{% static 'members/images/maindecor.png' %}" alt="Fairy Club Logo">
+    </div>
+</div>
+
+</body>
+</html>

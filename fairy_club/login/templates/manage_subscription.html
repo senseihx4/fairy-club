@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+  {% load static %}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'members/manage_subscription.css' %}">
+  <title>My Subscription</title>
+  <script>
+    function updateTime() {
+      document.getElementById('current-time').textContent = new Date().toLocaleTimeString();
+    }
+    window.onload = function () { updateTime(); setInterval(updateTime, 1000); };
+  </script>
+</head>
+
+<body>
+<div class="container">
+
+  <!-- Top bar -->
+  <div class="top">
+    <div class="time-back">
+      <p id="current-time"></p>
+      <button id="back_button" onclick="history.back()">&lt; Back</button>
+    </div>
+    <img id="cones" src="{% static 'members/images/cones.png' %}" alt="decoration">
+  </div>
+
+  <h1 class="page-title">My Subscription</h1>
+
+
+  <div class="plan-card
+    {% if request.user.membership_type == 1 %}plan-fairy-time
+    {% elif request.user.membership_type == 3 %}plan-fairy-world
+    {% else %}plan-fairy-circle{% endif %}">
+    <div class="plan-card-top">
+      <span class="active-badge">Active</span>
+      <span class="gift-icon">🎁</span>
+    </div>
+    <div class="plan-card-body">
+      <div class="plan-info">
+        <p class="plan-sparkle">✨</p>
+        <div>
+          <h2 class="plan-name">
+            {% if request.user.membership_type == 1 %}Fairy Time
+            {% elif request.user.membership_type == 2 %}Fairy Circle
+            {% elif request.user.membership_type == 3 %}Fairy World
+            {% else %}Fairy Circle{% endif %}
+          </h2>
+          <p class="plan-trial">Free trial until January 19, 2026</p>
+          <p class="plan-price">$30<span>/monthly</span></p>
+        </div>
+      </div>
+      <img class="plan-decor" src="{% static 'members/images/cloud.png' %}" alt="cloud">
+    </div>
+  </div>
+
+  <!-- Billing Info -->
+  <div class="info-card">
+    <h3 class="info-title">Billing Info</h3>
+    <p class="info-label">Next Billing Date</p>
+    <p class="info-value date-value">Jan 19, 2026</p>
+    <p class="info-body">You'll be charged $19.99 for your monthly subscription</p>
+    <hr class="divider">
+    <p class="info-label">Payment Method</p>
+    <p class="info-value">•••• •••• •••• 4242</p>
+    <p class="info-sub">Visa ending in 4242</p>
+  </div>
+
+  <!-- Current Features -->
+  <div class="features-section">
+    <h3 class="features-title">⭐ Current Features</h3>
+    <ul class="features-list">
+      <li><span class="check">✓</span> All Basic Features</li>
+      <li><span class="check">✓</span> Priority Support</li>
+      <li><span class="check">✓</span> 50 GB storage</li>
+      <li><span class="check">✓</span> Up to 5 devices</li>
+      <li><span class="check">✓</span> Advanced Analytics</li>
+      <li><span class="check">✓</span> Custom branding</li>
+    </ul>
+  </div>
+
+  <!-- Action Buttons -->
+  <div class="action-buttons">
+    <button class="btn-manage">Manage Subscription</button>
+    <button class="btn-invoice">Download Invoice</button>
+  </div>
+
+</div>
+</body>
+</html>

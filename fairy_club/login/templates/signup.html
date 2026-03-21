@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+ {% load static %}
+  
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+   <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+   <link rel="stylesheet" href="{% static 'members/signup.css' %}">
+    <title>Signup page</title>
+    <script>
+        function updateTime() {
+            document.getElementById('current-time').textContent = new Date().toLocaleTimeString();
+        }
+        window.onload = function() { updateTime(); setInterval(updateTime, 1000); };
+    </script>
+    <script>
+      function openPolicy(){
+        document.getElementById("privacyModal").style.display="flex";
+      }
+
+       function closePolicy(){
+        document.getElementById("privacyModal").style.display="none";
+     } 
+    </script>
+</head>
+
+<body>
+
+<div class="container">
+    <div class="top">
+        <div class="time-back">
+        <p id="current-time"></p>
+        <button id="back_button" onclick="history.back()"> &lt;  Back</button>
+        </div>
+        <img id="cones" src="{% static 'members/images/cones.png' %}" alt="Fairy Club Logo">
+    </div>
+    
+    <div class="logo">
+    
+      <div class="intro_text">
+        <h1>Signup page</h1>
+         <p>Step into learning magic in new world</p>
+      </div>
+      <img src="{% static 'members/images/logo.png' %}" alt="Fairy Club Logo">
+    </div>
+    
+    <div class="form-container">
+    <form method="POST" action="{% url 'register_user' %}">
+        {% csrf_token %}
+
+
+        <input type="text" name="username" placeholder="Username"><br><br>
+        <input type="email" name="email" placeholder="Enter your email"><br><br>
+        <input type="password" name="password" placeholder="Password"><br><br>
+        <input type="password" name="confirm_password" placeholder="Confirm Password"><br><br>
+        <div class="checkbox-container">
+         <div class="custom-checkbox">
+         <span class="text">
+            I have read the <a href="#" onclick="openPolicy(); event.preventDefault();">Privacy Policy</a>
+         </span>
+         <label>
+         <input type="checkbox" name="terms" required>
+         <span class="checkmark"></span>
+         </label>
+         </div>
+        </div>
+        
+        <button id="button-container" type="submit">Sign Up</button><br><br>
+       
+        
+
+        <h4>Already have an account?<a href="{% url 'login_user' %}">Login here</a></h4>
+        
+
+
+    </form>
+    <div id="privacyModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closePolicy()">&times;</span>
+        <h2>Privacy Policy</h2>
+        <p>
+        This is your privacy policy. Explain how user data is used,
+        stored, and protected.
+        </p>
+    </div>
+    </div>
+    </div>
+</div>
+
+</body>
+</html>
