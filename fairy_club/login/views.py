@@ -3,7 +3,7 @@ from django.shortcuts import render
 from .forms import MembershipTypeForm
 from django.contrib.auth import login
 from .forms import Fairytype, UserForm, ProfileForm
-from .models import User
+from .models import User, globalmail
 from django.contrib import messages
 from django.shortcuts import redirect
 from django.core.mail import send_mail
@@ -135,7 +135,30 @@ def login_user(request):
     return render(request, 'login_user.html')
 
 def main_page(request):
-    return render(request, 'main_page.html')
+    fairy_images = ['r1.png', 'r2.png', 'r3.png', 'r4.png', 'r5.png', 'r6.png']
+    mails = globalmail.objects.order_by('-created_at')[:6]
+    mail_list = [(mail, fairy_images[i % len(fairy_images)]) for i, mail in enumerate(mails)]
+    return render(request, 'main_page.html', {'mail_list': mail_list})
+
+def reply_mail(request, mail_id):
+    mail = get_object_or_404(globalmail, id=mail_id)
+    if request.method == 'POST':
+        reply_content = request.POST.get('reply_content')
+        send_mail(
+            subject=f"Reply to: {mail.mailtitel}",
+            message=reply_content,
+            from_email=settings.EMAIL_HOST_USER,
+            recipient_list=[request.user.email],
+            fail_silently=False,
+        )
+        messages.success(request, 'Reply sent successfully!')
+        return redirect('main_page')
+    return render(request, 'reply_mail.html', {'mail': mail})
+
+
+
+
+
 
 def edit_profile(request):
     profile = get_object_or_404(User, id=request.user.id)

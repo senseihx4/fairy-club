@@ -67,3 +67,14 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.email
+    
+
+
+class globalmail(models.Model):
+    mailtitel = models.CharField(max_length=100)
+    mailbody = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+
+    def __str__(self):
+        return self.mailtitel

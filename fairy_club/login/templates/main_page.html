@@ -21,7 +21,8 @@
         function closeMenu() {
             document.getElementById('side-drawer').classList.remove('open');
         }
-    </script>
+
+</script>
 </head>
 
 <body>
@@ -43,11 +44,42 @@
             <li><a href="{% url 'edit_profile' %}">&#9998; Edit Profile</a></li>
             <li><a href="{% url 'manage_subscription' %}">&#11088; Manage Your Subscription</a></li>
             <li><a href="{% url 'home_page' %}">&#128682; Logout</a></li>
+            <li><a href="{% url 'password_change' %}">&#128273; Change Password</a></li>
+
         </ul>
     </div>
     <div class="sdpage">
         <img src="{% static 'members/images/maindecor.png' %}" alt="Fairy Club Logo">
     </div>
+    <div class="fairy-mail-section">
+        <div class="fairy-mail-header">
+            <h3>Fairy Mail</h3>
+            <a href="#" class="see-all">See all</a>
+        </div>
+        <div class="fairy-mail-list">
+            {% for mail, img in mail_list %}
+            <div class="fairy-mail-item">
+                <div class="fairy-avatar">
+                    <img src="{% static 'members/images/' %}{{ img }}" alt="fairy">
+                </div>
+                <div class="fairy-mail-content">
+                    <div class="fairy-mail-top">
+                        <span class="fairy-name">{{ mail.mailtitel }}</span>
+                        <span class="mail-time">This Week</span>
+                    </div>
+                    <p class="mail-preview">{{ mail.mailbody }}</p>
+                    <a href="#" class="reply-btn">&#8617; Reply</a>
+                </div>
+            </div>
+            {% empty %}
+            <p class="no-mail">No fairy mail yet!</p>
+            {% endfor %}
+        </div>
+    </div>
+
+
+
+
 </div>
 
 </body>
