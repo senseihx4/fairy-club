@@ -68,7 +68,7 @@
                         <span class="mail-time">This Week</span>
                     </div>
                     <p class="mail-preview">{{ mail.mailbody }}</p>
-                    <a href="#" class="reply-btn">&#8617; Reply</a>
+                    <a href="{% url 'reply_mail' mail.id %}" class="reply-btn">&#8617; Reply</a>
                 </div>
             </div>
             {% empty %}

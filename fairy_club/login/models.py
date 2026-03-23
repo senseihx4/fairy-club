@@ -74,7 +74,18 @@ class globalmail(models.Model):
     mailtitel = models.CharField(max_length=100)
     mailbody = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
+    reply_mail= models.EmailField(null=True, blank=True)
 
 
     def __str__(self):
         return self.mailtitel
+
+
+class MailReply(models.Model):
+    mail = models.ForeignKey(globalmail, on_delete=models.CASCADE, related_name='replies')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    reply_content = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Reply by {self.user.email} to {self.mail.mailtitel}"

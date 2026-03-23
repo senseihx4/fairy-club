@@ -3,7 +3,7 @@ from django.shortcuts import render
 from .forms import MembershipTypeForm
 from django.contrib.auth import login
 from .forms import Fairytype, UserForm, ProfileForm
-from .models import User, globalmail
+from .models import User, globalmail, MailReply
 from django.contrib import messages
 from django.shortcuts import redirect
 from django.core.mail import send_mail
@@ -144,6 +144,7 @@ def reply_mail(request, mail_id):
     mail = get_object_or_404(globalmail, id=mail_id)
     if request.method == 'POST':
         reply_content = request.POST.get('reply_content')
+        MailReply.objects.create(mail=mail, user=request.user, reply_content=reply_content)
         send_mail(
             subject=f"Reply to: {mail.mailtitel}",
             message=reply_content,

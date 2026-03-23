@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
-from .models import User, globalmail
+from .models import User, globalmail, MailReply
 
 
 @admin.register(User)
@@ -29,6 +29,13 @@ class UserAdmin(BaseUserAdmin):
 class GlobalMailAdmin(admin.ModelAdmin):
     list_display = ('mailtitel', 'created_at')
     search_fields = ('mailtitel', 'mailbody')
+    ordering = ('-created_at',)
+
+
+@admin.register(MailReply)
+class MailReplyAdmin(admin.ModelAdmin):
+    list_display = ('mail', 'user', 'created_at')
+    search_fields = ('reply_content', 'user__email', 'mail__mailtitel')
     ordering = ('-created_at',)
 
 

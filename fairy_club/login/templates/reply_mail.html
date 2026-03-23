@@ -2,19 +2,26 @@
 <html>
 <head>
     {% load static %}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'members/reply_mail.css' %}">
     <title>Reply to Mail</title>
 </head>
 <body>
-    <h2>Reply to: {{ mail.mailtitel }}</h2>
-    <p>{{ mail.mailbody }}</p>
+    <div class="container">
+        <h2 class="reply-title">Reply to: {{ mail.mailtitel }}</h2>
+        <p class="mail-body-preview">{{ mail.mailbody }}</p>
 
-    <form method="POST">
-        {% csrf_token %}
-        <textarea name="reply_content" rows="6" cols="40" placeholder="Write your reply..."></textarea>
+        <form method="POST">
+            {% csrf_token %}
+            <textarea name="reply_content" rows="6" placeholder="Write your reply..."></textarea>
+            <br>
+            <button type="submit" class="send-btn">&#8617; Send Reply</button>
+        </form>
+
         <br>
-        <button type="submit">Send Reply</button>
-    </form>
-
-    <a href="{% url 'main_page' %}">Back</a>
+        <a href="{% url 'main_page' %}" class="back-link">&#8592; Back</a>
+    </div>
 </body>
 </html>
