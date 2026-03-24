@@ -176,20 +176,32 @@ MEMBERSHIP_UPLOAD_LIMITS = {
 }
 
 def podcast(request):
-    podcasts = PodcastModel.objects.order_by('-created_at')
     upload_count = 0
     upload_limit = 0
     can_upload = False
+    user_podcast_ids = set()
     if request.user.is_authenticated:
         upload_limit = MEMBERSHIP_UPLOAD_LIMITS.get(request.user.membership_type, 0)
         upload_count = uploadedpodcast.objects.filter(user=request.user).count()
         can_upload = upload_count < upload_limit
+        user_podcast_ids = set(uploadedpodcast.objects.filter(user=request.user).values_list('podcast_id', flat=True))
+    podcasts = PodcastModel.objects.filter(id__in=user_podcast_ids).order_by('-created_at')
     return render(request, 'podcast.html', {
         'podcasts': podcasts,
         'upload_count': upload_count,
         'upload_limit': upload_limit,
         'can_upload': can_upload,
+        'user_podcast_ids': user_podcast_ids,
     })
+
+def delete_podcast(request, podcast_id):
+    if request.method == 'POST' and request.user.is_authenticated:
+        uploaded = uploadedpodcast.objects.filter(podcast_id=podcast_id, user=request.user).first()
+        if uploaded:
+            podcast_obj = uploaded.podcast
+            uploaded.delete()
+            podcast_obj.delete()
+    return redirect('podcast')
 
 def upload_podcast(request):
     if request.method == 'POST':

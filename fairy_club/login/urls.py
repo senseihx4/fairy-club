@@ -29,4 +29,5 @@ urlpatterns = [
     path('password_change/done/', auth_views.PasswordChangeDoneView.as_view(template_name='password_change_done.html'), name='password_change_done'),
     path('podcast/', views.podcast, name='podcast'),
     path('podcast/upload/', views.upload_podcast, name='upload_podcast'),
+    path('podcast/delete/<int:podcast_id>/', views.delete_podcast, name='delete_podcast'),
 ]

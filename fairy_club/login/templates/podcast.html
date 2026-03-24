@@ -90,6 +90,12 @@
             <span class="mail-time">{{ pod.created_at|date:"M d" }}</span>
           </div>
           <a href="{{ pod.video.url }}" class="reply-btn" target="_blank">&#9654; Play</a>
+          {% if pod.id in user_podcast_ids %}
+          <form method="post" action="{% url 'delete_podcast' pod.id %}" style="display:inline;" onsubmit="return confirm('Delete this podcast?')">
+            {% csrf_token %}
+            <button type="submit" class="delete-podcast-btn">&#128465; Delete</button>
+          </form>
+          {% endif %}
         </div>
       </div>
       {% empty %}

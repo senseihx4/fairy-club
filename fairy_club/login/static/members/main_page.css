@@ -258,6 +258,24 @@ body{
     background: rgba(163, 98, 123, 0.15);
 }
 
+.delete-podcast-btn {
+    display: inline-block;
+    margin-top: 6px;
+    margin-left: 6px;
+    color: #c0392b;
+    background: #fff5f5;
+    border: 1px solid #e8a0a0;
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-size: 0.82em;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.delete-podcast-btn:hover {
+    background: rgba(192, 57, 43, 0.15);
+}
+
 /* Bottom Navigation Bar */
 .bottom-nav {
     position: absolute;
