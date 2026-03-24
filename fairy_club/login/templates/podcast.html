@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+ {% load static %}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'members/main_page.css' %}">
+  <link rel="stylesheet" href="{% static 'members/podcast.css' %}">
+  <title>Podcasts</title>
+  <script>
+    function updateTime() {
+      document.getElementById('current-time').textContent = new Date().toLocaleTimeString();
+    }
+    window.onload = function() { updateTime(); setInterval(updateTime, 1000); };
+
+    function openMenu() { document.getElementById('side-drawer').classList.add('open'); }
+    function closeMenu() { document.getElementById('side-drawer').classList.remove('open'); }
+
+    function openUploadModal() { document.getElementById('upload-modal').style.display = 'flex'; }
+    function closeUploadModal() { document.getElementById('upload-modal').style.display = 'none'; }
+  </script>
+</head>
+
+<body>
+<div class="container">
+  <div class="top">
+    <p id="current-time"></p>
+    <div class="time-back">
+      <div>
+        <h1 id="name">{{ request.user.child_name }}</h1>
+      </div>
+      <button class="menu-btn" onclick="openMenu()">&#9776;</button>
+    </div>
+  </div>
+
+  <div class="side-drawer" id="side-drawer">
+    <button class="drawer-close" onclick="closeMenu()">&#10005;</button>
+    <ul class="drawer-menu">
+      <li><a href="{% url 'edit_profile' %}">&#9998; Edit Profile</a></li>
+      <li><a href="{% url 'manage_subscription' %}">&#11088; Manage Your Subscription</a></li>
+      <li><a href="{% url 'home_page' %}">&#128682; Logout</a></li>
+      <li><a href="{% url 'password_change' %}">&#128273; Change Password</a></li>
+    </ul>
+  </div>
+
+  <!-- Podcast Section -->
+  <div class="fairy-mail-section">
+    <div class="fairy-mail-header">
+      <h3>Fairy Podcasts</h3>
+      {% if can_upload %}
+        <button class="upload-podcast-btn" onclick="openUploadModal()">+ Upload ({{ upload_count }}/{{ upload_limit }})</button>
+      {% else %}
+        <button class="upload-podcast-btn upgrade-btn" onclick="document.getElementById('upgrade-notice').style.display='block'">&#128274; Limit Reached</button>
+      {% endif %}
+    </div>
+
+    <!-- Upgrade notice -->
+    {% if not can_upload %}
+    <div id="upgrade-notice" style="display:none; background:#fff0f5; border:1px solid #e8a0b8; border-radius:12px; padding:16px; margin:10px 0; text-align:center;">
+      <p style="margin:0 0 8px; font-weight:bold; color:#a3627b;">You've used all {{ upload_limit }} video uploads for your <strong>{{ request.user.get_membership_type_display }}</strong> plan.</p>
+      <p style="margin:0 0 12px; color:#666;">Upgrade your membership to upload more videos:</p>
+      <ul style="list-style:none; padding:0; margin:0 0 12px; color:#555;">
+        <li>&#10024; Fairy Time &mdash; 3 videos</li>
+        <li>&#10024; Fairy Circle &mdash; 6 videos</li>
+        <li>&#10024; Fairy World &mdash; 20 videos</li>
+      </ul>
+      <a href="{% url 'manage_subscription' %}" style="display:inline-block; background:#a3627b; color:white; padding:8px 20px; border-radius:20px; text-decoration:none;">Upgrade Membership</a>
+    </div>
+    {% endif %}
+
+    {% if messages %}
+    {% for message in messages %}
+    <div style="background:#fff0f5; border:1px solid #e8a0b8; border-radius:10px; padding:12px; margin:8px 0; color:#a3627b; text-align:center;">{{ message }}</div>
+    {% endfor %}
+    {% endif %}
+    <div class="fairy-mail-list">
+      {% for pod in podcasts %}
+      <div class="fairy-mail-item">
+        <div class="fairy-avatar podcast-thumb">
+          {% if pod.thumbnail %}
+          <img src="{{ pod.thumbnail.url }}" alt="thumbnail">
+          {% else %}
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="rgb(163,98,123)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2"/><path d="M16.24 7.76a6 6 0 0 1 0 8.49"/><path d="M7.76 7.76a6 6 0 0 0 0 8.49"/></svg>
+          {% endif %}
+        </div>
+        <div class="fairy-mail-content">
+          <div class="fairy-mail-top">
+            <span class="fairy-name">{{ pod.podcasttitel }}</span>
+            <span class="mail-time">{{ pod.created_at|date:"M d" }}</span>
+          </div>
+          <a href="{{ pod.video.url }}" class="reply-btn" target="_blank">&#9654; Play</a>
+        </div>
+      </div>
+      {% empty %}
+      <p class="no-mail">No podcasts yet!</p>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- Upload Modal (only shown when within limit) -->
+  {% if can_upload %}
+  <div class="upload-modal" id="upload-modal">
+    <div class="upload-modal-content">
+      <button class="drawer-close" onclick="closeUploadModal()">&#10005;</button>
+      <h3 class="upload-modal-title">Upload Podcast</h3>
+      <form method="post" action="{% url 'upload_podcast' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="upload-form-group">
+          <label>Title</label>
+          <input type="text" name="podcasttitel" placeholder="Podcast title..." required>
+        </div>
+        <div class="upload-form-group">
+          <label>Video / Audio</label>
+          <input type="file" name="video" accept="video/*,audio/*" required>
+        </div>
+        <div class="upload-form-group">
+          <label>Thumbnail</label>
+          <input type="file" name="thumbnail" accept="image/*" required>
+        </div>
+        <button type="submit" class="upload-submit-btn">Upload</button>
+      </form>
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- Bottom Navigation Bar -->
+  <div class="bottom-nav">
+    <div class="bottom-nav-bar">
+      <a href="{% url 'main_page' %}" class="nav-item">
+        <div class="nav-icon-wrap">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5z"/><polyline points="9 21 9 12 15 12 15 21"/></svg>
+        </div>
+      </a>
+      <a href="#" class="nav-item">
+        <div class="nav-icon-wrap">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="18" height="14" rx="2"/><circle cx="17" cy="5" r="2" fill="currentColor" stroke="none"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        </div>
+      </a>
+      <div class="nav-plus-spacer"></div>
+      <a href="{% url 'podcast' %}" class="nav-item active">
+        <div class="nav-icon-wrap active-wrap">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2"/><path d="M16.24 7.76a6 6 0 0 1 0 8.49"/><path d="M7.76 7.76a6 6 0 0 0 0 8.49"/><path d="M20.07 4.93a10 10 0 0 1 0 14.14"/><path d="M3.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+        </div>
+      </a>
+      <a href="#" class="nav-item">
+        <div class="nav-icon-wrap">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+        </div>
+      </a>
+    </div>
+    <button class="nav-plus-btn">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+    </button>
+  </div>
+
+</div>
+</body>
+</html>

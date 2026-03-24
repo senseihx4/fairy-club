@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
-from .models import User, globalmail, MailReply
+from .models import User, globalmail, MailReply, podcast, uploadedpodcast
 
 
 @admin.register(User)
@@ -38,4 +38,16 @@ class MailReplyAdmin(admin.ModelAdmin):
     search_fields = ('reply_content', 'user__email', 'mail__mailtitel')
     ordering = ('-created_at',)
 
+@admin.register(podcast)
+class PodcastAdmin(admin.ModelAdmin):
+    list_display = ('podcasttitel', 'created_at')
+    search_fields = ('podcasttitel',)
+    ordering = ('-created_at',)
+
+
+@admin.register(uploadedpodcast)
+class UploadedPodcastAdmin(admin.ModelAdmin):
+    list_display = ('podcast', 'user', 'created_at')
+    search_fields = ('podcast__podcasttitel', 'user__email')
+    ordering = ('-created_at',)
 

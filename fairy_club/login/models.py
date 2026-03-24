@@ -89,3 +89,26 @@ class MailReply(models.Model):
 
     def __str__(self):
         return f"Reply by {self.user.email} to {self.mail.mailtitel}"
+    
+
+
+
+
+class podcast(models.Model):
+    podcasttitel = models.CharField(max_length=100)
+    video = models.FileField(upload_to='podcast_videos/')
+    thumbnail = models.ImageField(upload_to='podcast_thumbnails/')
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+
+
+    def __str__(self):
+        return self.podcasttitel
+    
+class uploadedpodcast(models.Model):
+    podcast = models.ForeignKey(podcast, on_delete=models.CASCADE, related_name='uploaded_podcasts')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.podcast.podcasttitel} uploaded by {self.user.email}"

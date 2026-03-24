@@ -16,6 +16,7 @@ body{
     height: 900px;
     width: 500px;
     padding-left: 20px;
+    padding-bottom: 100px;
     margin-top: 70px;
     margin-bottom: 250px;
     overflow: hidden;
@@ -232,6 +233,11 @@ body{
     overflow-y: auto;
     max-height: 420px;
     padding-right: 4px;
+    scrollbar-width: none;
+}
+
+.fairy-mail-list::-webkit-scrollbar {
+    display: none;
 }
 
 .reply-btn {
@@ -250,4 +256,80 @@ body{
 
 .reply-btn:hover {
     background: rgba(163, 98, 123, 0.15);
+}
+
+/* Bottom Navigation Bar */
+.bottom-nav {
+    position: absolute;
+    bottom: 18px;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    z-index: 5;
+    pointer-events: none;
+}
+
+.bottom-nav-bar {
+    display: flex;
+    align-items: center;
+    background: white;
+    border-radius: 40px;
+    padding: 10px 20px;
+    gap: 10px;
+    box-shadow: 0 4px 24px rgba(163, 98, 123, 0.13);
+    width: 88%;
+    justify-content: space-between;
+    pointer-events: all;
+}
+
+.nav-plus-spacer {
+    width: 56px;
+}
+
+.nav-item {
+    text-decoration: none;
+    color: rgb(130, 70, 100);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.nav-icon-wrap {
+    width: 46px;
+    height: 46px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    color: rgb(130, 70, 100);
+}
+
+.active-wrap {
+    background: linear-gradient(135deg, rgba(220, 180, 240, 0.5), rgba(255, 200, 230, 0.4));
+}
+
+.nav-plus-btn {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 68px;
+    height: 68px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #b36fcf, #e060a0);
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 28px 10px rgba(180, 100, 200, 0.25);
+    pointer-events: all;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.nav-plus-btn:hover {
+    transform: translateX(-50%) scale(1.07);
+    box-shadow: 0 0 36px 14px rgba(180, 100, 200, 0.32);
 }

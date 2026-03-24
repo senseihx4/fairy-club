@@ -3,7 +3,7 @@ from django.shortcuts import render
 from .forms import MembershipTypeForm
 from django.contrib.auth import login
 from .forms import Fairytype, UserForm, ProfileForm
-from .models import User, globalmail, MailReply
+from .models import User, globalmail, MailReply, podcast as PodcastModel, uploadedpodcast
 from django.contrib import messages
 from django.shortcuts import redirect
 from django.core.mail import send_mail
@@ -144,7 +144,6 @@ def reply_mail(request, mail_id):
     mail = get_object_or_404(globalmail, id=mail_id)
     if request.method == 'POST':
         reply_content = request.POST.get('reply_content')
-        MailReply.objects.create(mail=mail, user=request.user, reply_content=reply_content)
         send_mail(
             subject=f"Reply to: {mail.mailtitel}",
             message=reply_content,
@@ -155,10 +154,6 @@ def reply_mail(request, mail_id):
         messages.success(request, 'Reply sent successfully!')
         return redirect('main_page')
     return render(request, 'reply_mail.html', {'mail': mail})
-
-
-
-
 
 
 def edit_profile(request):
@@ -173,3 +168,42 @@ def edit_profile(request):
 
 def manage_subscription(request):
     return render(request, 'manage_subscription.html')
+
+MEMBERSHIP_UPLOAD_LIMITS = {
+    1: 3,   # fairy time
+    2: 6,   # fairy circle
+    3: 20,  # fairy world
+}
+
+def podcast(request):
+    podcasts = PodcastModel.objects.order_by('-created_at')
+    upload_count = 0
+    upload_limit = 0
+    can_upload = False
+    if request.user.is_authenticated:
+        upload_limit = MEMBERSHIP_UPLOAD_LIMITS.get(request.user.membership_type, 0)
+        upload_count = uploadedpodcast.objects.filter(user=request.user).count()
+        can_upload = upload_count < upload_limit
+    return render(request, 'podcast.html', {
+        'podcasts': podcasts,
+        'upload_count': upload_count,
+        'upload_limit': upload_limit,
+        'can_upload': can_upload,
+    })
+
+def upload_podcast(request):
+    if request.method == 'POST':
+        user = request.user
+        upload_limit = MEMBERSHIP_UPLOAD_LIMITS.get(user.membership_type, 0)
+        upload_count = uploadedpodcast.objects.filter(user=user).count()
+        if upload_count >= upload_limit:
+            messages.error(request, 'You have reached your upload limit. Please upgrade your membership to upload more videos.')
+            return redirect('podcast')
+        title = request.POST.get('podcasttitel')
+        video = request.FILES.get('video')
+        thumbnail = request.FILES.get('thumbnail')
+        p = PodcastModel(podcasttitel=title, video=video, thumbnail=thumbnail)
+        p.save()
+        uploadedpodcast.objects.create(podcast=p, user=user)
+        return redirect('podcast')
+    return redirect('podcast')

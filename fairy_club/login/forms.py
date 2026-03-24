@@ -1,5 +1,5 @@
 from django import forms
-from .models import User
+from .models import User, podcast as PodcastModel
 
 class UserForm(forms.ModelForm):
     class Meta:
@@ -26,4 +26,11 @@ class MembershipTypeForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ['membership_type']
+
+
+class po(forms.ModelForm):
+    class Meta:
+        model = PodcastModel
+        fields = ['podcasttitel', 'video', 'thumbnail']
+
 
