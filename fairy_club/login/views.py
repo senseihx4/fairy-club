@@ -1,5 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import render
+from .serializers import UserSerializer
 from .forms import MembershipTypeForm
 from django.contrib.auth import login
 from .forms import Fairytype, UserForm, ProfileForm
@@ -10,6 +11,11 @@ from django.core.mail import send_mail
 from django.conf import settings
 import random
 from django.shortcuts import  get_object_or_404
+from rest_framework import viewsets
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
+from .serializers import GlobalMailSerializer, MailReplySerializer, PodcastSerializer, UploadedPodcastSerializer
+
+
 
 def home_page(request):
     return render(request, 'home.html')
@@ -219,3 +225,34 @@ def upload_podcast(request):
         uploadedpodcast.objects.create(podcast=p, user=user)
         return redirect('podcast')
     return redirect('podcast')
+
+
+class userviewset(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = [IsAdminUser]
+
+class globalmailviewset(viewsets.ModelViewSet):
+    queryset = globalmail.objects.all()
+    serializer_class = GlobalMailSerializer
+    permission_classes = [IsAuthenticated]
+
+class mailreplyviewset(viewsets.ModelViewSet):
+    queryset = MailReply.objects.all()
+    serializer_class = MailReplySerializer
+    permission_classes = [IsAuthenticated]
+
+
+class podcastviewset(viewsets.ModelViewSet):
+    queryset = PodcastModel.objects.all()
+    serializer_class = PodcastSerializer
+    permission_classes = [ IsAdminUser]
+
+
+class uploadedpodcastviewset(viewsets.ModelViewSet):
+    queryset = uploadedpodcast.objects.all()
+    serializer_class = UploadedPodcastSerializer
+    permission_classes = [IsAuthenticated]
+
+
+
