@@ -1,0 +1,266 @@
+body {
+    background-color: pink;
+    font-family: "Lora", serif;
+}
+
+.container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin: 0;
+    background-color: rgb(245, 242, 250);
+    border: 1px solid black;
+    border-radius: 10px;
+    height: 900px;
+    width: 500px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 100px;
+    margin-top: 70px;
+    margin-bottom: 250px;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+/* Top bar */
+.top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 12px;
+}
+
+#current-time {
+    color: rgb(163, 98, 123);
+    margin: 0;
+    font-size: 13px;
+}
+
+#back_button {
+    background: none;
+    border: 1px solid rgba(163, 98, 123, 0.4);
+    color: rgb(92, 58, 49);
+    font-family: "Lora", serif;
+    font-size: 13px;
+    border-radius: 20px;
+    padding: 4px 14px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+#back_button:hover {
+    background-color: rgba(163, 98, 123, 0.12);
+}
+
+/* Profile hero section */
+.profile-hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 24px;
+    margin-bottom: 8px;
+}
+
+.avatar-wrap {
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    background: rgb(230, 218, 248);
+    border: 3px solid rgba(163, 98, 123, 0.4);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 12px;
+    box-shadow: 0 4px 18px rgba(163, 98, 123, 0.18);
+}
+
+.avatar-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.avatar-placeholder {
+    font-size: 42px;
+}
+
+.profile-name {
+    color: rgb(92, 58, 49);
+    font-size: 24px;
+    font-weight: 700;
+    margin: 0 0 4px 0;
+}
+
+.profile-email {
+    color: rgb(163, 98, 123);
+    font-size: 13px;
+    margin: 0;
+    opacity: 0.85;
+}
+
+/* Badge / court chip */
+.court-badge {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 4px 16px;
+    background: linear-gradient(135deg, rgba(200, 160, 240, 0.35), rgba(255, 180, 220, 0.35));
+    border: 1px solid rgba(163, 98, 123, 0.3);
+    border-radius: 20px;
+    color: rgb(130, 60, 110);
+    font-size: 13px;
+    font-family: "Lora", serif;
+}
+
+/* Info cards */
+.profile-cards {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.info-card {
+    background: white;
+    border-radius: 14px;
+    padding: 12px 18px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    box-shadow: 0 2px 10px rgba(163, 98, 123, 0.08);
+}
+
+.info-icon {
+    font-size: 20px;
+    flex-shrink: 0;
+    width: 34px;
+    text-align: center;
+}
+
+.info-label {
+    font-size: 11px;
+    color: rgb(163, 98, 123);
+    margin: 0 0 2px 0;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.info-value {
+    font-size: 15px;
+    color: rgb(92, 58, 49);
+    margin: 0;
+    font-weight: 600;
+}
+
+/* Membership pill */
+.membership-pill {
+    display: inline-block;
+    padding: 2px 12px;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 600;
+    background: linear-gradient(135deg, #b36fcf, #e060a0);
+    color: white;
+}
+
+/* Edit button */
+.edit-btn {
+    display: block;
+    width: calc(100% - 0px);
+    margin-top: 18px;
+    padding: 12px;
+    background: linear-gradient(135deg, #b36fcf, #e060a0);
+    color: white;
+    border: none;
+    border-radius: 30px;
+    font-family: "Lora", serif;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    box-shadow: 0 4px 16px rgba(180, 80, 160, 0.25);
+    transition: opacity 0.2s, transform 0.1s;
+}
+
+.edit-btn:hover {
+    opacity: 0.92;
+    transform: scale(1.01);
+}
+
+/* Bottom Navigation Bar */
+.bottom-nav {
+    position: absolute;
+    bottom: 18px;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    z-index: 5;
+    pointer-events: none;
+}
+
+.bottom-nav-bar {
+    display: flex;
+    align-items: center;
+    background: white;
+    border-radius: 40px;
+    padding: 10px 20px;
+    gap: 10px;
+    box-shadow: 0 4px 24px rgba(163, 98, 123, 0.13);
+    width: 88%;
+    justify-content: space-between;
+    pointer-events: all;
+}
+
+.nav-plus-spacer {
+    width: 56px;
+}
+
+.nav-item {
+    text-decoration: none;
+    color: rgb(130, 70, 100);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.nav-icon-wrap {
+    width: 46px;
+    height: 46px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    color: rgb(130, 70, 100);
+}
+
+.active-wrap {
+    background: linear-gradient(135deg, rgba(220, 180, 240, 0.5), rgba(255, 200, 230, 0.4));
+}
+
+.nav-plus-btn {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 68px;
+    height: 68px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #b36fcf, #e060a0);
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 28px 10px rgba(180, 100, 200, 0.25);
+    pointer-events: all;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.nav-plus-btn:hover {
+    transform: translateX(-50%) scale(1.07);
+    box-shadow: 0 0 36px 14px rgba(180, 100, 200, 0.32);
+}

@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'login',
     'payments',
     'rest_framework',
+    'channels',
 ]
 
 MIDDLEWARE = [
@@ -72,7 +73,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'fairy_club.wsgi.application'
+ASGI_APPLICATION = 'fairy_club.asgi.application'
 
 
 # Database
@@ -144,3 +145,8 @@ REST_FRAMEWORK = {
     ),
 }
 
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels.layers.InMemoryChannelLayer"
+    }
+}

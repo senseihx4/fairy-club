@@ -2,6 +2,10 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from .managers import CustomUserManager
 from django.conf import settings
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from asgiref.sync import async_to_sync
+from channels.layers import get_channel_layer
 
 
 
@@ -79,6 +83,24 @@ class globalmail(models.Model):
 
     def __str__(self):
         return self.mailtitel
+
+
+@receiver(post_save, sender=globalmail)
+def broadcast_new_mail(sender, instance, created, **kwargs):
+    if created:
+        channel_layer = get_channel_layer()
+        async_to_sync(channel_layer.group_send)(
+            "fairy_mail",
+            {
+                "type": "new_mail",
+                "mail": {
+                    "id": instance.id,
+                    "mailtitel": instance.mailtitel,
+                    "mailbody": instance.mailbody,
+                    "created_at": str(instance.created_at),
+                },
+            },
+        )
 
 
 class MailReply(models.Model):

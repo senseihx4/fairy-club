@@ -15,6 +15,72 @@
         }
         window.onload = function() { updateTime(); setInterval(updateTime, 1000); };
 
+        const fairy_images = ['r1.png', 'r2.png', 'r3.png', 'r4.png', 'r5.png', 'r6.png'];
+        let mailCount = 0;
+
+        function buildMailItem(mail) {
+            const img = fairy_images[mailCount % fairy_images.length];
+            mailCount++;
+            return `
+            <div class="fairy-mail-item">
+                <div class="fairy-avatar">
+                    <img src="/static/members/images/${img}" alt="fairy">
+                </div>
+                <div class="fairy-mail-content">
+                    <div class="fairy-mail-top">
+                        <span class="fairy-name">${mail.mailtitel}</span>
+                        <span class="mail-time">Just now</span>
+                    </div>
+                    <p class="mail-preview">${mail.mailbody}</p>
+                    <a href="/reply/${mail.id}/" class="reply-btn">&#8617; Reply</a>
+                </div>
+            </div>`;
+        }
+
+        window.addEventListener('load', function() {
+            let retryDelay = 1000;
+            let ws;
+
+            function connectWS() {
+                ws = new WebSocket('ws://' + window.location.host + '/ws/mails/');
+
+                ws.onmessage = function(e) {
+                    const data = JSON.parse(e.data);
+                    const list = document.querySelector('.fairy-mail-list');
+
+                    if (data.type === 'initial') {
+                        list.innerHTML = '';
+                        mailCount = 0;
+                        if (data.mails.length === 0) {
+                            list.innerHTML = '<p class="no-mail">No fairy mail yet!</p>';
+                        } else {
+                            data.mails.forEach(mail => {
+                                list.insertAdjacentHTML('beforeend', buildMailItem(mail));
+                            });
+                        }
+                    } else if (data.type === 'new_mail') {
+                        const noMail = list.querySelector('.no-mail');
+                        if (noMail) noMail.remove();
+                        list.insertAdjacentHTML('afterbegin', buildMailItem(data.mail));
+                        // keep max 6
+                        const items = list.querySelectorAll('.fairy-mail-item');
+                        if (items.length > 6) items[items.length - 1].remove();
+                    }
+                };
+
+                ws.onopen = function() {
+                    retryDelay = 1000;
+                };
+
+                ws.onclose = function() {
+                    setTimeout(connectWS, retryDelay);
+                    retryDelay = Math.min(retryDelay * 2, 30000);
+                };
+            }
+
+            connectWS();
+        });
+
         function openMenu() {
             document.getElementById('side-drawer').classList.add('open');
         }
@@ -96,7 +162,7 @@
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2"/><path d="M16.24 7.76a6 6 0 0 1 0 8.49"/><path d="M7.76 7.76a6 6 0 0 0 0 8.49"/><path d="M20.07 4.93a10 10 0 0 1 0 14.14"/><path d="M3.93 4.93a10 10 0 0 0 0 14.14"/></svg>
                 </div>
             </a>
-            <a href="{% url 'edit_profile' %}" class="nav-item">
+            <a href="{% url 'profile_page' %}" class="nav-item">
                 <div class="nav-icon-wrap">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
                 </div>

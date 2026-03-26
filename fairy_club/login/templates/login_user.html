@@ -46,6 +46,13 @@
     </div>
     
     <div class="form-container">
+
+    {% if messages %}
+    {% for message in messages %}
+    <div style="background:#fff0f5; border:1px solid #e8a0b8; color:#c0006a; padding:10px 16px; border-radius:8px; margin-bottom:12px; font-family:'Lora',serif;">{{ message }}</div>
+    {% endfor %}
+    {% endif %}
+
     <form method="POST" action="{% url 'login_user' %}">
         {% csrf_token %}
 

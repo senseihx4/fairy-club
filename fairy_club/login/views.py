@@ -14,6 +14,24 @@ from django.shortcuts import  get_object_or_404
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from .serializers import GlobalMailSerializer, MailReplySerializer, PodcastSerializer, UploadedPodcastSerializer
+from channels.layers import get_channel_layer
+from asgiref.sync import async_to_sync
+
+
+def _push_mail_to_ws(mail):
+    channel_layer = get_channel_layer()
+    async_to_sync(channel_layer.group_send)(
+        "fairy_mail",
+        {
+            "type": "new_mail",
+            "mail": {
+                "id": mail.id,
+                "mailtitel": mail.mailtitel,
+                "mailbody": mail.mailbody,
+                "created_at": str(mail.created_at),
+            },
+        },
+    )
 
 
 
@@ -172,6 +190,9 @@ def edit_profile(request):
     return render(request, 'edit_profile.html', {'form': form})
 
 
+def profile_page(request):
+    return render(request, 'profilepage.html')
+
 def manage_subscription(request):
     return render(request, 'manage_subscription.html')
 
@@ -236,6 +257,10 @@ class globalmailviewset(viewsets.ModelViewSet):
     queryset = globalmail.objects.all()
     serializer_class = GlobalMailSerializer
     permission_classes = [IsAuthenticated]
+
+    def perform_create(self, serializer):
+        mail = serializer.save()
+        _push_mail_to_ws(mail)
 
 class mailreplyviewset(viewsets.ModelViewSet):
     queryset = MailReply.objects.all()
