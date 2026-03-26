@@ -24,7 +24,7 @@
         <button id="back_button" onclick="history.back()">&lt; Back</button>
     </div>
 
-    
+    <!-- Profile hero -->
     <div class="profile-hero">
         <div class="avatar-wrap">
             {% if request.user.profile_picture %}
@@ -40,12 +40,12 @@
 
     <!-- Info cards -->
     <div class="profile-cards">
-        {% if request.user.child_name %}
+        {% if request.user.username %}
         <div class="info-card">
             <span class="info-icon">&#128100;</span>
             <div>
-                <p class="info-label">Child Name</p>
-                <p class="info-value">{{ request.user.child_name }}</p>
+                <p class="info-label">Username</p>
+                <p class="info-value">{{ request.user.username }}</p>
             </div>
         </div>
         {% endif %}
