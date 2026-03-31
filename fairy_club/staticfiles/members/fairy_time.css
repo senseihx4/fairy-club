@@ -1,0 +1,183 @@
+body{
+    background-color: pink;
+    font-family: "Lora", serif;
+}
+
+
+.container{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin: 0;
+    background-color: rgb(245, 242, 250);
+    border: 1px solid black;
+    border-radius: 10px;
+    height: auto;
+    width: 500px;
+    padding-left: 20px;
+    margin-top: 70px;
+
+}
+.container p{
+    color: rgb(163, 98, 123);
+    margin-bottom: 50px;
+}
+
+
+.top{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.top img{
+   margin-top: 0;
+   width: 200px;
+   height: auto;
+}
+#back_button{
+    background-color: transparent;
+    border: 2px solid #F0EFFD;
+    color: rgb(163, 98, 123);
+    background-color: rgb(237, 230, 249);
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-radius: 50px;
+    font-size: 16px;
+    cursor: pointer;
+    font-family: "Lora", serif;
+    font-size: 25px;
+}
+.logo{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    justify-content: space-between;
+}
+.form-container h1{
+    color: rgb(163, 98, 123);
+    font-size: 30px;
+    align-items: flex-start;
+    margin-left: 20Px;
+}
+
+.fairyhead{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    
+    background-color: rgb(247, 203, 235);
+    border-radius: 20px;
+    padding: 10px;
+    width: 460px;
+    height: 100px;
+}
+.fairyhead-text{
+    color: rgb(92, 58, 49);
+    margin-right: 40px;
+    
+}
+.fairyhead img{
+   margin-top: 0;
+   width: 90px;
+   height: auto;
+}
+
+/* What's Included */
+.whats-included {
+    margin-top: 20px;
+    padding-right: 20px;
+}
+.whats-included h2,
+.why-choose h2 {
+    color: rgb(92, 58, 49);
+    font-size: 22px;
+    margin-bottom: 12px;
+}
+.included-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.included-list li {
+    background-color: white;
+    border: 1px solid #e0d8f0;
+    border-radius: 12px;
+    padding: 14px 18px;
+    color: rgb(92, 58, 49);
+    font-size: 18px;
+}
+.included-list li .tag {
+    color: rgb(163, 98, 123);
+    font-size: 14px;
+}
+
+/* Why Choose */
+.why-choose {
+    margin-top: 24px;
+    padding-right: 20px;
+}
+.reason-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+.reason-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background-color: white;
+    border: 1px solid #e0d8f0;
+    border-radius: 12px;
+    padding: 14px 18px;
+}
+.reason-icon {
+    font-size: 28px;
+    background-color: #ede8f8;
+    border-radius: 50%;
+    width: 52px;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+.reason-text h3 {
+    color: rgb(163, 98, 123);
+    font-size: 18px;
+    margin: 0 0 4px 0;
+}
+.reason-text p {
+    color: rgb(92, 58, 49);
+    font-size: 14px;
+    margin: 0;
+}
+
+/* Checkout */
+.checkout-section {
+    margin-top: 24px;
+    display: flex;
+    justify-content: center;
+    padding-right: 20px;
+}
+.checkout-btn {
+    display: block;
+    margin: 24px auto 0;
+    background: linear-gradient(90deg, #d78bd8, #f0c97d, #ef5a78);
+    border: none;
+    color: white;
+    padding: 14px 0;
+    border-radius: 50px;
+    font-size: 25px;
+    cursor: pointer;
+    font-family: "Lora", serif;
+    width: 440px;
+    text-align: center;
+    text-decoration: none;
+}

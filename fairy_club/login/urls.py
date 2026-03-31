@@ -10,6 +10,7 @@ router.register('globalmails', views.globalmailviewset)
 router.register('mailreplies', views.mailreplyviewset)
 router.register('podcasts', views.podcastviewset)
 router.register('uploadedpodcasts', views.uploadedpodcastviewset)
+router.register('login', views.loginviewset, basename='login')
 
 
 
@@ -22,7 +23,7 @@ urlpatterns = [
     path('', views.home_page, name='home_page'),
     path('signup/', views.signup, name='signup'),
     path('register/', views.register_user, name='register_user'),
-    path('verify-otp/', views.verify_otp, name='verify_otp'),
+    path('verify-otp/', views.VerifyOtpView.as_view(), name='verify_otp'),
     path("create_profile/", views.create_profile, name="create_profile"),
     path("select_court/", views.select_court, name="select_court"),
     path("fairy_time/", views.fairy_time, name="fairy_time"),
@@ -45,4 +46,5 @@ urlpatterns = [
     path('podcast/', views.podcast, name='podcast'),
     path('podcast/upload/', views.upload_podcast, name='upload_podcast'),
     path('podcast/delete/<int:podcast_id>/', views.delete_podcast, name='delete_podcast'),
+
 ]

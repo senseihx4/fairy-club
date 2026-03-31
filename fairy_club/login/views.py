@@ -1,8 +1,12 @@
 from django.http import HttpResponse
 from django.shortcuts import render
+from requests import Response, request
 from .serializers import UserSerializer
 from .forms import MembershipTypeForm
 from django.contrib.auth import login
+from django.views import View
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
 from .forms import Fairytype, UserForm, ProfileForm
 from .models import User, globalmail, MailReply, podcast as PodcastModel, uploadedpodcast
 from django.contrib import messages
@@ -11,11 +15,18 @@ from django.core.mail import send_mail
 from django.conf import settings
 import random
 from django.shortcuts import  get_object_or_404
-from rest_framework import viewsets
-from rest_framework.permissions import IsAuthenticated, IsAdminUser
+from rest_framework import viewsets, status
+from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
+from rest_framework.response import Response
 from .serializers import GlobalMailSerializer, MailReplySerializer, PodcastSerializer, UploadedPodcastSerializer
 from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
+from rest_framework.exceptions import ValidationError
+from rest_framework_simplejwt.tokens import RefreshToken
+
+
+
+
 
 
 def _push_mail_to_ws(mail):
@@ -37,6 +48,7 @@ def _push_mail_to_ws(mail):
 
 def home_page(request):
     return render(request, 'home.html')
+
 
 def signup(request):
     form = UserForm()
@@ -77,32 +89,32 @@ def register_user(request):
 
 
 
-def verify_otp(request):
-    email = request.session.get('verify_email')
+@method_decorator(csrf_exempt, name='dispatch')
+class VerifyOtpView(View):
+    def get(self, request):
+        email = request.session.get('verify_email')
+        if not email:
+            return HttpResponse("Session expired. Please signup again.")
+        return render(request, "otp.html")
 
-    if not email:
-        return HttpResponse("Session expired. Please signup again.")
+    def post(self, request):
+        email = request.session.get('verify_email')
+        if not email:
+            return HttpResponse("Session expired. Please signup again.")
 
-    user = User.objects.filter(email=email).first()
+        user = User.objects.filter(email=email).first()
+        if not user:
+            return HttpResponse("User not found.")
 
-    if not user:
-        return HttpResponse("User not found.")
-
-    if request.method == "POST":
         entered_otp = request.POST.get('otp')
-    
         if entered_otp == user.verification_token:
-            user.is_verified= True
+            user.is_verified = True
             user.verification_token = None
             user.save()
             login(request, user)
-
             return redirect('create_profile')
 
-        else:
-            return HttpResponse("Invalid OTP")
-
-    return render(request, "otp.html")
+        return HttpResponse("Invalid OTP")
 
 def create_profile(request):
     form = ProfileForm(request.POST or None, instance=request.user)
@@ -251,7 +263,70 @@ def upload_podcast(request):
 class userviewset(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = [IsAdminUser]
+
+    def get_permissions(self):
+        if self.action == 'create':
+            return [AllowAny()]
+        return [IsAdminUser()]
+
+    def create(self, request, *args, **kwargs):
+        response = super().create(request, *args, **kwargs)
+        response.data['next'] = '/verify-otp/'
+        return response
+
+    def perform_create(self, serializer):
+        email = self.request.data.get('email')
+        if User.objects.filter(email=email).exists():
+            raise ValidationError({'email': 'A user with this email already exists.'})
+
+        password = self.request.data.get('password')
+        if not password:
+            raise ValidationError({'password': 'This field is required.'})
+
+        user = serializer.save()
+        user.verification_token = str(random.randint(100000, 999999))
+        user.is_verified = False
+        user.set_password(password)
+        user.save()
+        self.request.session['verify_email'] = user.email
+
+        send_mail(
+            subject='Your Fairy Club Verification Code',
+            message=f'Your OTP is: {user.verification_token}\n\nThis code is valid for one use only.',
+            from_email=settings.EMAIL_HOST_USER,
+            recipient_list=[user.email],
+            fail_silently=False,
+        )
+
+
+
+
+class loginviewset(viewsets.ViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    
+
+    def create(self, request):
+        email = request.data.get('email')
+        password = request.data.get('password')
+
+        user = User.objects.filter(email=email).first()
+
+        if user and user.check_password(password):
+            if user.is_verified:
+                login(request, user)
+                refresh = RefreshToken.for_user(user)
+                return Response({
+                    'access': str(refresh.access_token),
+                    'refresh': str(refresh),
+                }, status=status.HTTP_200_OK)
+            else:
+                return Response({'detail': 'Account not verified. Please check your email for the OTP.'}, status=status.HTTP_403_FORBIDDEN)
+        else:
+            return Response({'detail': 'Invalid email or password.'}, status=status.HTTP_401_UNAUTHORIZED)
+
+
+    
 
 class globalmailviewset(viewsets.ModelViewSet):
     queryset = globalmail.objects.all()
@@ -278,6 +353,8 @@ class uploadedpodcastviewset(viewsets.ModelViewSet):
     queryset = uploadedpodcast.objects.all()
     serializer_class = UploadedPodcastSerializer
     permission_classes = [IsAuthenticated]
+
+
 
 
 
