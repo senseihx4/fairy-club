@@ -93,6 +93,7 @@
 
 <body>
 <div class="container">
+    <div class="content-area">
     <div class="top">
         <p id="current-time"></p>
         <div class="time-back">
@@ -120,7 +121,15 @@
     <div class="fairy-mail-section">
         <div class="fairy-mail-header">
             <h3>Fairy Mail</h3>
-            <a href="#" class="see-all">See all</a>
+            <div class="mail-pagination">
+                {% if page_obj.has_previous %}
+                    <a href="?page={{ page_obj.previous_page_number }}" class="mail-page-btn">&#8592;</a>
+                {% endif %}
+                <span class="mail-page-info">{{ page_obj.number }}/{{ page_obj.paginator.num_pages }}</span>
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}" class="mail-page-btn">&#8594;</a>
+                {% endif %}
+            </div>
         </div>
         <div class="fairy-mail-list">
             {% for mail, img in mail_list %}
@@ -142,6 +151,8 @@
             {% endfor %}
         </div>
     </div>
+
+    </div><!-- end content-area -->
 
     <!-- Bottom Navigation Bar -->
     <div class="bottom-nav">

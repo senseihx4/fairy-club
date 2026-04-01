@@ -23,9 +23,7 @@ from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
 from rest_framework.exceptions import ValidationError
 from rest_framework_simplejwt.tokens import RefreshToken
-
-
-
+from django.core.paginator import Paginator
 
 
 
@@ -172,9 +170,12 @@ def login_user(request):
 
 def main_page(request):
     fairy_images = ['r1.png', 'r2.png', 'r3.png', 'r4.png', 'r5.png', 'r6.png']
-    mails = globalmail.objects.order_by('-created_at')[:6]
-    mail_list = [(mail, fairy_images[i % len(fairy_images)]) for i, mail in enumerate(mails)]
-    return render(request, 'main_page.html', {'mail_list': mail_list})
+    mails = globalmail.objects.order_by('-created_at')
+    paginator = Paginator(mails, 6)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    mail_list = [(mail, fairy_images[i % len(fairy_images)]) for i, mail in enumerate(page_obj)]
+    return render(request, 'main_page.html', {'mail_list': mail_list, 'page_obj': page_obj})
 
 def reply_mail(request, mail_id):
     mail = get_object_or_404(globalmail, id=mail_id)

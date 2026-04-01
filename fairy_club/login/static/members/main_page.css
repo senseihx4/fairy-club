@@ -16,11 +16,24 @@ body{
     height: 900px;
     width: 500px;
     padding-left: 20px;
-    padding-bottom: 100px;
+    padding-bottom: 0;
     margin-top: 70px;
     margin-bottom: 250px;
     overflow: hidden;
 }
+
+.content-area {
+    height: calc(100% - 90px);
+    overflow-y: auto;
+    scrollbar-width: none;
+    padding-left: 0;
+    padding-bottom: 16px;
+}
+
+.content-area::-webkit-scrollbar {
+    display: none;
+}
+
 .container p{
     color: rgb(163, 98, 123);
     margin-bottom: 0;
@@ -350,4 +363,56 @@ body{
 .nav-plus-btn:hover {
     transform: translateX(-50%) scale(1.07);
     box-shadow: 0 0 36px 14px rgba(180, 100, 200, 0.32);
+}
+.mail-pagination {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.mail-page-btn {
+    background: linear-gradient(135deg, #b36fcf, #e060a0);
+    color: white;
+    padding: 3px 10px;
+    border-radius: 14px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    line-height: 1;
+}
+
+.mail-page-info {
+    color: rgb(130, 70, 100);
+    font-family: 'Lora', serif;
+    font-size: 0.85rem;
+}
+
+.pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    margin: 12px 0 120px;
+}
+
+.page-btn {
+    background: linear-gradient(135deg, #b36fcf, #e060a0);
+    color: white;
+    padding: 8px 18px;
+    border-radius: 20px;
+    text-decoration: none;
+    font-family: 'Lora', serif;
+    font-size: 0.9rem;
+    box-shadow: 0 2px 8px rgba(180, 100, 200, 0.3);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.page-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 14px rgba(180, 100, 200, 0.45);
+}
+
+.page-info {
+    color: rgb(130, 70, 100);
+    font-family: 'Lora', serif;
+    font-size: 0.95rem;
 }
