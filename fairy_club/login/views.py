@@ -299,9 +299,6 @@ class userviewset(viewsets.ModelViewSet):
             fail_silently=False,
         )
 
-
-
-
 class loginviewset(viewsets.ViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
