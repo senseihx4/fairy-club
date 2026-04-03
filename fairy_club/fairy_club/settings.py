@@ -30,6 +30,16 @@ DEBUG = os.environ.get("DEBUG", "False") == "True"
 
 ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "localhost,127.0.0.1").split(",")
 
+CSRF_TRUSTED_ORIGINS = [
+    "https://fairy-club-production.up.railway.app",
+    "http://localhost",
+    "http://127.0.0.1",
+]
+
+# Railway (and most reverse proxies) terminate SSL and forward requests over HTTP internally.
+# This tells Django to trust the X-Forwarded-Proto header so it knows the original request was HTTPS.
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+
 # Application definition
 
 INSTALLED_APPS = [
