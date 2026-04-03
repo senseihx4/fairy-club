@@ -1,5 +1,8 @@
 # 🧚 Fairy Club
 
+## 🌐 Live Demo
+👉 **[https://fairy-club-production.up.railway.app](https://fairy-club-production.up.railway.app)**
+
 A fully-featured full-stack web application built with **Django**. Fairy Club is a community membership platform where users can register, manage their profiles, book memberships, share podcasts, and interact through a global mail/messaging system — with nearly every feature fully functional.
 
 ---
@@ -93,19 +96,13 @@ Register → Login → Book Membership → Edit Profile
 
 ---
 
-## ⚠️ Note for Contributors
-
-The virtual environment folder (`lib/`, `bin/`, `pyvenv.cfg`) was accidentally committed to this repo. When cloning, ignore those folders — create your own virtual environment instead using the steps above. A `.gitignore` fix is in progress.
-
----
-
 ## 🔮 Planned Improvements
 
-- [ ] Remove committed virtual environment (repo cleanup)
-- [ ] Add `requirements.txt`
+- [x] Remove virtual environment from repo
+- [x] Add `requirements.txt`
+- [x] Deploy to Railway
 - [ ] Email notifications for new global mail
 - [ ] Podcast audio player in the browser
-- [ ] Deploy to Railway / Render
 - [ ] REST API endpoints for mobile app support
 
 ---
