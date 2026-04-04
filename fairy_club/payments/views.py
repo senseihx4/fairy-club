@@ -57,8 +57,8 @@ def create_checkout(request, membership_type):
             "user_id": request.user.id,
             "membership_type": membership_type,
         },
-        success_url="http://127.0.0.1:8000/payments/success/?session_id={CHECKOUT_SESSION_ID}",
-        cancel_url="http://127.0.0.1:8000/payments/cancel/",
+        success_url=request.build_absolute_uri('/payments/success/') + '?session_id={CHECKOUT_SESSION_ID}',
+        cancel_url=request.build_absolute_uri('/payments/cancel/'),
     )
 
     return redirect(checkout_session.url)
