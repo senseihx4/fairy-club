@@ -22,8 +22,25 @@ from asgiref.sync import async_to_sync
 from rest_framework.exceptions import ValidationError
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.core.paginator import Paginator
-from django.core.mail import send_mail
+import requests
 
+def _send_otp_email(to_email, otp):
+    import os
+    response = requests.post(
+        "https://api.brevo.com/v3/smtp/email",
+        headers={
+            "accept": "application/json",
+            "api-key": os.environ.get("BREVO_API_KEY"),
+            "content-type": "application/json",
+        },
+        json={
+            "sender": {"name": "Fairy Club", "email": "a71b1d001@smtp-brevo.com"},
+            "to": [{"email": to_email}],
+            "subject": "Your Fairy Club Verification Code",
+            "textContent": f"Your OTP is: {otp}\n\nThis code expires in 5 minutes.",
+        }
+    )
+    print("Brevo response:", response.status_code, response.text)
 
 
 def _push_mail_to_ws(mail):
@@ -41,14 +58,6 @@ def _push_mail_to_ws(mail):
         },
     )
 
-def _send_otp_email(to_email, otp):
-    send_mail(
-        subject="Your Fairy Club Verification Code",
-        message=f"Your OTP is: {otp}\n\nThis code expires in 5 minutes.",
-        from_email=settings.EMAIL_HOST_USER,
-        recipient_list=[to_email],
-        fail_silently=False,
-    )
 
 
 def home_page(request):

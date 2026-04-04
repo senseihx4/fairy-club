@@ -151,11 +151,7 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 AUTH_USER_MODEL = 'login.User'
 
-EMAIL_HOST = os.environ.get("EMAIL_HOST")
-EMAIL_PORT = int(os.environ.get("EMAIL_PORT", 587))
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
-EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
+BREVO_API_KEY = os.environ.get("BREVO_API_KEY")
 
 
 STRIPE_PUBLIC_KEY = os.environ.get("STRIPE_PUBLIC_KEY")
