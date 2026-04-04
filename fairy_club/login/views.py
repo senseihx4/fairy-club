@@ -24,6 +24,9 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from django.core.paginator import Paginator
 import requests
 
+
+
+
 def _send_otp_email(to_email, otp):
     import os
     response = requests.post(
@@ -34,7 +37,10 @@ def _send_otp_email(to_email, otp):
             "content-type": "application/json",
         },
         json={
-            "sender": {"name": "Fairy Club", "email": "a71b1d001@smtp-brevo.com"},
+            "sender": {
+                "name": settings.BREVO_SENDER_NAME,
+                "email": settings.BREVO_SENDER_EMAIL
+            },
             "to": [{"email": to_email}],
             "subject": "Your Fairy Club Verification Code",
             "textContent": f"Your OTP is: {otp}\n\nThis code expires in 5 minutes.",
