@@ -171,3 +171,7 @@ CHANNEL_LAYERS = {
         "BACKEND": "channels.layers.InMemoryChannelLayer"
     }
 }
+
+
+BREVO_SENDER_EMAIL = os.environ.get("BREVO_SENDER_EMAIL", "kartik7087@gmail.com")
+BREVO_SENDER_NAME = os.environ.get("BREVO_SENDER_NAME", "Fairy Club")
