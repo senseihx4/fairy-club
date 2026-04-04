@@ -10,7 +10,6 @@ from .forms import Fairytype, UserForm, ProfileForm
 from .models import User, globalmail, MailReply, podcast as PodcastModel, uploadedpodcast
 from django.contrib import messages
 from django.shortcuts import redirect
-from django.core.mail import send_mail
 from django.conf import settings
 import random
 from django.shortcuts import  get_object_or_404
@@ -23,6 +22,7 @@ from asgiref.sync import async_to_sync
 from rest_framework.exceptions import ValidationError
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.core.paginator import Paginator
+from django.core.mail import send_mail
 
 
 
@@ -41,6 +41,14 @@ def _push_mail_to_ws(mail):
         },
     )
 
+def _send_otp_email(to_email, otp):
+    send_mail(
+        subject="Your Fairy Club Verification Code",
+        message=f"Your OTP is: {otp}\n\nThis code expires in 5 minutes.",
+        from_email=settings.EMAIL_HOST_USER,
+        recipient_list=[to_email],
+        fail_silently=False,
+    )
 
 
 def home_page(request):
@@ -68,14 +76,7 @@ def register_user(request):
             user.save() 
             request.session['verify_email'] = user.email
 
-            send_mail(
-                subject='Your Fairy Club Verification Code',
-                message=f'Your OTP is: {user.verification_token}\n\nThis code is valid for one use only.',
-                from_email=settings.EMAIL_HOST_USER,
-                recipient_list=[user.email],
-                fail_silently=False,
-            )
-
+            _send_otp_email(user.email, user.verification_token)
             return redirect('verify_otp') 
                 
     else:
@@ -289,14 +290,7 @@ class userviewset(viewsets.ModelViewSet):
         user.set_password(password)
         user.save()
         self.request.session['verify_email'] = user.email
-
-        send_mail(
-            subject='Your Fairy Club Verification Code',
-            message=f'Your OTP is: {user.verification_token}\n\nThis code is valid for one use only.',
-            from_email=settings.EMAIL_HOST_USER,
-            recipient_list=[user.email],
-            fail_silently=False,
-        )
+        _send_otp_email(user.email, user.verification_token)
 
 class loginviewset(viewsets.ViewSet):
     queryset = User.objects.all()
