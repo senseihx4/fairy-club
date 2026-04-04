@@ -1,6 +1,5 @@
 from django.http import HttpResponse
 from django.shortcuts import render
-from requests import Response, request
 from .serializers import UserSerializer
 from .forms import MembershipTypeForm
 from django.contrib.auth import login
