@@ -1,7 +1,7 @@
 # 🧚 Fairy Club
 
 ## 🌐 Live Demo
-👉 **[https://fairy-club-production.up.railway.app](https://fairy-club-1.onrender.com/)**
+👉 **[https://fairy-club-1.onrender.com](https://fairy-club-1.onrender.com/)**
 
 A fully-featured full-stack web application built with **Django**. Fairy Club is a community membership platform where users can register, manage their profiles, book memberships, share podcasts, and interact through a global mail/messaging system — with nearly every feature fully functional.
 
