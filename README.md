@@ -8,7 +8,7 @@ A fully-featured full-stack web application built with **Django**. Fairy Club is
 ---
 
 ## ✨ Features   
-
+ 
 
 - 🔐 **Authentication** — Signup, Login, Logout, Change Password
 - 👤 **Profile Management** — Edit profile details, upload profile picture
