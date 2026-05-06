@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+ {% load static %}
+  
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+   <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+   <link rel="stylesheet" href="{% static 'members/otp.css' %}">
+    <title>OTP Verification</title>
+    <script>
+        function updateTime() {
+            document.getElementById('current-time').textContent = new Date().toLocaleTimeString();
+        }
+        window.onload = function() {
+            updateTime();
+            setInterval(updateTime, 1000);
+
+            const inputs = document.querySelectorAll('.otp-container input');
+            inputs.forEach((input, index) => {
+                input.addEventListener('input', () => {
+                    if (input.value && index < inputs.length - 1) {
+                        inputs[index + 1].focus();
+                    }
+                });
+                input.addEventListener('keydown', (e) => {
+                    if (e.key === 'Backspace' && !input.value && index > 0) {
+                        inputs[index - 1].focus();
+                    }
+                });
+                input.addEventListener('paste', (e) => {
+                    e.preventDefault();
+                    const text = e.clipboardData.getData('text').replace(/\D/g, '');
+                    text.split('').forEach((char, i) => {
+                        if (inputs[index + i]) inputs[index + i].value = char;
+                    });
+                    const next = Math.min(index + text.length, inputs.length - 1);
+                    inputs[next].focus();
+                });
+            });
+
+            document.getElementById('otp-form').addEventListener('submit', () => {
+                const otp = Array.from(inputs).map(i => i.value).join('');
+                document.getElementById('otp-hidden').value = otp;
+            });
+        };
+    </script>
+   
+</head>
+
+<body>
+
+<div class="container">
+    <p id="current-time"></p>
+    <div class="top">
+        <div class="time-back">
+            <button id="back_button" onclick="history.back()"> &lt;  Back</button>
+        </div>
+        <img id="cones" src="{% static 'members/images/cloud.png' %}" alt="Fairy Club Logo">
+    </div>
+
+    <div class="logo">
+        <div class="intro_text">
+            <h1>Enter </h1>
+        </div><br>
+        <h1>One-Time Password</h1><br>
+        <p>please enter the OTP sent to your email</p>
+    </div>
+
+    <div>
+        <form method="POST" action="{% url 'verify_otp' %}" id="otp-form">
+            {% csrf_token %}
+            <input type="hidden" name="otp" id="otp-hidden" />
+            <div class="otp-container">
+             <input type="text" maxlength="1" inputmode="numeric" autocomplete="one-time-code" />
+             <input type="text" maxlength="1" inputmode="numeric" />
+             <input type="text" maxlength="1" inputmode="numeric" />
+             <input type="text" maxlength="1" inputmode="numeric" />
+             <input type="text" maxlength="1" inputmode="numeric" />
+             <input type="text" maxlength="1" inputmode="numeric" />
+            </div>
+            <div class="send">
+                <a href="#">Resend OTP</a>
+                <button type="submit">Verify OTP</button>
+            </div>
+
+        </form>
+    </div>
+
+</div>
+
+</body>
+</html>

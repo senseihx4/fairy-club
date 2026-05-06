@@ -1,0 +1,256 @@
+body {
+  background-color: pink;
+  font-family: "Lora", serif;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fdf0f5;
+  border-radius: 30px;
+  height: 900px;
+  width: 420px;
+  overflow-y: scroll;
+  scrollbar-width: none;       /* Firefox */
+  -ms-overflow-style: none;    /* IE/Edge */
+  padding: 0 20px 30px 20px;
+  box-sizing: border-box;
+  margin-top: 70px;
+}
+.container::-webkit-scrollbar {
+  display: none;               /* Chrome/Safari */
+}
+
+/* Top bar */
+.top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.top img {
+  width: 130px;
+  height: auto;
+}
+.time-back {
+  display: flex;
+  flex-direction: column;
+}
+.time-back p {
+  color: rgb(163, 98, 123);
+  font-size: 13px;
+  margin: 10px 0 4px 0;
+}
+#back_button {
+  background-color: rgb(237, 230, 249);
+  border: 2px solid #F0EFFD;
+  color: rgb(163, 98, 123);
+  padding: 6px 16px;
+  border-radius: 50px;
+  font-size: 16px;
+  cursor: pointer;
+  font-family: "Lora", serif;
+}
+
+/* Page title */
+.page-title {
+  color: rgb(163, 98, 123);
+  font-size: 28px;
+  margin: 10px 0 16px 4px;
+}
+
+/* Plan card */
+.plan-card {
+  background: linear-gradient(135deg, #f9c9d9, #f5d9f0);
+  border-radius: 20px;
+  padding: 16px 20px;
+  margin-bottom: 18px;
+}
+.plan-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.active-badge {
+  background-color: #f5a7c7;
+  color: white;
+  font-size: 13px;
+  padding: 3px 12px;
+  border-radius: 20px;
+}
+.gift-icon {
+  font-size: 24px;
+}
+.plan-card-body {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+.plan-info {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+.plan-sparkle {
+  font-size: 22px;
+  margin: 0;
+  padding-top: 4px;
+}
+.plan-name {
+  color: rgb(140, 75, 105);
+  font-size: 22px;
+  margin: 0 0 4px 0;
+}
+.plan-trial {
+  color: rgb(160, 100, 130);
+  font-size: 13px;
+  margin: 0 0 6px 0;
+}
+.plan-price {
+  color: rgb(130, 65, 95);
+  font-size: 30px;
+  font-weight: bold;
+  margin: 0;
+}
+.plan-price span {
+  font-size: 16px;
+  font-weight: normal;
+}
+.plan-decor {
+  width: 90px;
+  height: auto;
+}
+
+/* Billing info card */
+.info-card {
+  background-color: white;
+  border-radius: 20px;
+  padding: 18px 20px;
+  margin-bottom: 18px;
+}
+.info-title {
+  color: rgb(100, 60, 80);
+  font-size: 18px;
+  margin: 0 0 12px 0;
+}
+.info-label {
+  color: rgb(180, 130, 150);
+  font-size: 12px;
+  margin: 0 0 2px 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.info-value {
+  color: rgb(100, 60, 80);
+  font-size: 16px;
+  font-weight: bold;
+  margin: 0 0 6px 0;
+}
+.date-value {
+  color: #e07a99;
+}
+.info-body {
+  color: rgb(140, 100, 120);
+  font-size: 14px;
+  margin: 0 0 12px 0;
+}
+.divider {
+  border: none;
+  border-top: 1px solid #f0e0ea;
+  margin: 12px 0;
+}
+.info-sub {
+  color: rgb(170, 120, 145);
+  font-size: 13px;
+  margin: 2px 0 0 0;
+}
+
+/* Features section */
+.features-section {
+  margin-bottom: 20px;
+}
+.features-title {
+  color: rgb(100, 60, 80);
+  font-size: 18px;
+  margin: 0 0 12px 4px;
+}
+.features-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.features-list li {
+  background-color: white;
+  border-radius: 50px;
+  padding: 12px 20px;
+  color: rgb(120, 75, 100);
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.check {
+  color: #c97ab0;
+  font-size: 16px;
+}
+
+/* Action buttons */
+.action-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.btn-manage,
+.btn-invoice {
+  width: 100%;
+  padding: 16px;
+  border-radius: 50px;
+  font-family: "Lora", serif;
+  font-size: 17px;
+  cursor: pointer;
+  border: none;
+}
+.btn-manage {
+  background: linear-gradient(90deg, #f5d0e8, #ecdff8, #f5d0e8);
+  color: rgb(163, 98, 123);
+}
+.btn-invoice {
+  background: linear-gradient(90deg, #f5d0e8, #ecdff8, #f5d0e8);
+  color: rgb(163, 98, 123);
+}
+
+/* ── Per-plan card colours ───────────────────────── */
+
+/* Fairy Time — soft yellow / peach */
+.plan-fairy-time {
+  background: linear-gradient(135deg, #fde8c8, #fcd5a0);
+}
+.plan-fairy-time .active-badge { background-color: #f5b86e; }
+.plan-fairy-time .plan-name    { color: rgb(160, 100, 40); }
+.plan-fairy-time .plan-trial   { color: rgb(180, 120, 60); }
+.plan-fairy-time .plan-price   { color: rgb(150, 90, 30); }
+
+/* Fairy Circle — pink / lavender (default, matches screenshot) */
+.plan-fairy-circle {
+  background: linear-gradient(135deg, #f9c9d9, #f5d9f0);
+}
+.plan-fairy-circle .active-badge { background-color: #f5a7c7; }
+.plan-fairy-circle .plan-name    { color: rgb(140, 75, 105); }
+.plan-fairy-circle .plan-trial   { color: rgb(160, 100, 130); }
+.plan-fairy-circle .plan-price   { color: rgb(130, 65, 95); }
+
+/* Fairy World — purple / deep violet */
+.plan-fairy-world {
+  background: linear-gradient(135deg, #e0c9f9, #c9b0f0);
+}
+.plan-fairy-world .active-badge { background-color: #a97de0; }
+.plan-fairy-world .plan-name    { color: rgb(90, 50, 140); }
+.plan-fairy-world .plan-trial   { color: rgb(110, 70, 160); }
+.plan-fairy-world .plan-price   { color: rgb(80, 40, 130); }
