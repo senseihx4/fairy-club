@@ -1,0 +1,10 @@
+venv/
+lib/
+bin/
+pyvenv.cfg
+lib64
+.env
+__pycache__/
+*.pyc
+*.pyo
+db.sqlite3

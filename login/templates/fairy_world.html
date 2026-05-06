@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+ {% load static %}
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'members/fairy_world.css' %}">
+   <title>fairy world</title>
+   <script>
+       function updateTime() {
+           document.getElementById('current-time').textContent = new Date().toLocaleTimeString();
+       }
+       window.onload = function() { updateTime(); setInterval(updateTime, 1000); };
+   </script>
+</head>
+
+<body>
+<div class="container">
+    <div class="top">
+        <div class="time-back">
+        <p id="current-time"></p>
+        <button id="back_button" onclick="history.back()"> &lt;  Back</button>
+
+        </div>
+        <img id="cones" src="{% static 'members/images/cones.png' %}" alt="Fairy Club Logo">
+    </div>
+
+
+    <div class="form-container">
+        <div class="logo">
+
+
+            <h1>Plan Details</h1>
+
+            <img id="cones" src="{% static 'members/images/heart.png' %}" alt="Fairy Club Logo">
+
+        </div>
+        
+
+
+    </div>
+    
+     <div class="fairyhead">
+        <img id="cones" src="{% static 'members/images/crown.png' %}" alt="Fairy Club Logo">
+
+
+       <div class="fairyhead-text">
+         <h1>Fairy World</h1>
+         <h2>30$/month</h2>
+       </div>
+
+        <div>
+
+           
+
+
+        </div>
+
+     </div>
+         <div class="whats-included">
+        <h2>⭐ What's Included</h2>
+        <ul class="included-list">
+            <li>✓ All Fairy Time Features</li>
+            <li>✓ Ask the Fairies Questions <span class="tag">(Personalized Responses)</span></li>
+            <li>✓ Live Fairy Sessions <span class="tag">(Group Zoom)</span></li>
+        </ul>
+    </div>
+
+    <div class="why-choose">
+        <h2>⭐ Why Choose This Plan</h2>
+        <div class="reason-list">
+            <div class="reason-item">
+                <div class="reason-icon">🛡️</div>
+                <div class="reason-text">
+                    <h3>Secure & Reliable</h3>
+                    <p>Enterprise-grade security to keep your data safe</p>
+                </div>
+            </div>
+            <div class="reason-item">
+                <div class="reason-icon">🔄</div>
+                <div class="reason-text">
+                    <h3>Cancel Anytime</h3>
+                    <p>No long-term commitment, cancel your subscription anytime</p>
+                </div>
+            </div>
+            <div class="reason-item">
+                <div class="reason-icon">📅</div>
+                <div class="reason-text">
+                    <h3>14-Day Free Trial</h3>
+                    <p>Try it free for 14 days, no credit card required</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="checkout-section">
+        <a href="{% url 'create_checkout' 3 %}" class="checkout-btn">Checkout </a>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+
+</body>
+</html>

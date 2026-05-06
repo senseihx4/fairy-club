@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+ {% load static %}
+
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+   <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+   <link rel="stylesheet" href="{% static 'members/select_court.css' %}">
+    <title>select court</title>
+    <script>
+        function updateTime() {
+            document.getElementById('current-time').textContent = new Date().toLocaleTimeString();
+        }
+        window.onload = function() { updateTime(); setInterval(updateTime, 1000); };
+    </script>
+</head>
+
+<body>
+<div class="container">
+    <div class="top">
+        <div class="time-back">
+        <p id="current-time"></p>
+        <button id="back_button" onclick="history.back()">&lt;  Back</button>
+        </div>
+        <img id="cones" src="{% static 'members/images/cones.png' %}" alt="Fairy Club Logo">
+    </div>
+    <div class="level_bar">
+         <p>Step 2 out of 3</p>
+         <img src="{% static 'members/images/bar2.png' %}" alt="progress bar">
+    </div>
+
+    <div class="form-container">
+        <div class="logo">
+            <h1>Choose Your Child Fairy Friend</h1>
+            <img src="{% static 'members/images/sun.png' %}" alt="Fairy Club Logo">
+        </div>
+
+        <form method="post">
+            {% csrf_token %}
+            <div class="fairy-grid">
+
+                <input type="radio" name="court_type" id="f1" value="1" hidden>
+                <label for="f1" class="fairy-card">
+                    <img src="{% static 'members/images/r1.png' %}" alt="Rainbow Fairy">
+                    Rainbow Fairy
+                </label>
+
+                <input type="radio" name="court_type" id="f2" value="2" hidden>
+                <label for="f2" class="fairy-card">
+                    <img src="{% static 'members/images/r2.png' %}" alt="Heart Fairy">
+                    Heart Fairy
+                </label>
+
+                <input type="radio" name="court_type" id="f3" value="3" hidden>
+                <label for="f3" class="fairy-card">
+                    <img src="{% static 'members/images/r3.png' %}" alt="Flower Fairy">
+                    Rainbow Unicorn
+                </label>
+
+                <input type="radio" name="court_type" id="f4" value="4" hidden>
+                <label for="f4" class="fairy-card">
+                    <img src="{% static 'members/images/r4.png' %}" alt="Music Fairy">
+                    Star Fairy
+                </label>
+
+                <input type="radio" name="court_type" id="f5" value="5" hidden>
+                <label for="f5" class="fairy-card">
+                    <img src="{% static 'members/images/r5.png' %}" alt="Animal Fairy">
+                    Heart Unicorn
+                </label>
+
+                <input type="radio" name="court_type" id="f6" value="6" hidden>
+                <label for="f6" class="fairy-card">
+                    <img src="{% static 'members/images/r6.png' %}" alt="Nature Fairy">
+                    Fairy Wand
+                </label>
+
+            </div>
+            <button type="submit" class="next-btn">Next</button>
+        </form>
+    </div>
+
+</div>
+
+</body>
+</html>

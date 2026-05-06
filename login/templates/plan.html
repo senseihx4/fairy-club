@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+ {% load static %}
+  
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+   <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+   <link rel="stylesheet" href="{% static 'members/plan.css' %}">
+    <title>create profile</title>
+    <script>
+        function updateTime() {
+            document.getElementById('current-time').textContent = new Date().toLocaleTimeString();
+        }
+        window.onload = function() { updateTime(); setInterval(updateTime, 1000); };
+    </script>
+</head>
+
+<body>
+<div class="container">
+    <div class="top">
+        <div class="time-back">
+        <p id="current-time"></p>
+        <button id="back_button" onclick="history.back()"> &lt;  Back</button>
+       
+        </div>
+        <img id="cones" src="{% static 'members/images/cones.png' %}" alt="Fairy Club Logo">
+    </div>
+    <div class="level_bar">
+         <p>Step 3 out of 3</p>
+         <img id="cones" src="{% static 'members/images/bar3.png' %}" alt="Fairy Club Logo">
+    </div>
+
+    <div class="form-container">
+        <div class="logo">
+
+            <h1>Choose Your Membership</h1>
+
+            <img id="cones" src="{% static 'members/images/heart.png' %}" alt="Fairy Club Logo">
+        </div>
+
+    </div>
+     <form method="post">
+            {% csrf_token %}
+            <div class="membership-grid">
+
+                <input type="radio" name="membership_type" id="m1" value="1" hidden>
+                <label for="m1" class="membership-card">
+                    <div class="membership-header">
+                        <div class="membership-title">
+                            <span class="membership-icon">⭐</span>
+                            <span class="membership-name">Fairy Time</span>
+                        </div>
+                        <span class="membership-price">$6/month</span>
+                    </div>
+                    <ul class="membership-features">
+                        <li>Weekly Fairy Mail</li>
+                        <li>Share Your Fairy Letters &amp; Drawings</li>
+                        <li>Fairy Classes (Videos)</li>
+                        <li>Fairy Podcast</li>
+                    </ul>
+                </label>
+
+                <input type="radio" name="membership_type" id="m2" value="2" hidden>
+                <label for="m2" class="membership-card">
+                    <div class="membership-header">
+                        <div class="membership-title">
+                            <span class="membership-icon">✨</span>
+                            <span class="membership-name">Fairy Circle</span>
+                        </div>
+                        <span class="membership-price">$30/month</span>
+                    </div>
+                    <ul class="membership-features">
+                        <li>All Fairy Time Features</li>
+                        <li>Ask the Fairies Questions <span class="feature-note">(Personalized Responses)</span></li>
+                        <li>Live Fairy Sessions <span class="feature-note">(Group Zoom)</span></li>
+                    </ul>
+                </label>
+
+                <input type="radio" name="membership_type" id="m3" value="3" hidden>
+                <label for="m3" class="membership-card">
+                    <div class="membership-header">
+                        <div class="membership-title">
+                            <span class="membership-icon">👑</span>
+                            <span class="membership-name">Fairy World</span>
+                        </div>
+                        <span class="membership-price">$60/month</span>
+                    </div>
+                    <ul class="membership-features">
+                        <li>All Fairy Time Features</li>
+                        <li>Personal 1:1 Fairy Coaching</li>
+                        <li>Fairy Letter Bundles <span class="feature-note">(50+ Letters)</span></li>
+                    </ul>
+                </label>
+
+            </div>
+            <button type="submit" class="next-btn">Checkout Plan</button>
+        </form>
+
+
+</div>
+
+</body>
+</html>

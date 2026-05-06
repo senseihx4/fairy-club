@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+ {% load static %}
+  
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+   <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+   <link rel="stylesheet" href="{% static 'members/main_page.css' %}">
+    <title>create profile</title>
+    <script>
+        function updateTime() {
+            document.getElementById('current-time').textContent = new Date().toLocaleTimeString();
+        }
+        window.onload = function() { updateTime(); setInterval(updateTime, 1000); };
+
+        const fairy_images = ['r1.png', 'r2.png', 'r3.png', 'r4.png', 'r5.png', 'r6.png'];
+
+        function buildMailItem(mail, index) {
+            const img = fairy_images[index % fairy_images.length];
+            return `
+            <div class="fairy-mail-item">
+                <div class="fairy-avatar">
+                    <img src="/static/members/images/${img}" alt="fairy">
+                </div>
+                <div class="fairy-mail-content">
+                    <div class="fairy-mail-top">
+                        <span class="fairy-name">${mail.mailtitel}</span>
+                        <span class="mail-time">This Week</span>
+                    </div>
+                    <p class="mail-preview">${mail.mailbody}</p>
+                    <a href="/reply_mail/${mail.id}/" class="reply-btn">&#8617; Reply</a>
+                </div>
+            </div>`;
+        }
+
+        let knownIds = new Set(
+            [...document.querySelectorAll('.fairy-mail-item')].map(el =>
+                parseInt(el.dataset.mailId)
+            ).filter(Boolean)
+        );
+
+        async function pollMails() {
+            try {
+                const resp = await fetch('/mail_poll/');
+                const data = await resp.json();
+                const list = document.querySelector('.fairy-mail-list');
+                const newMails = data.mails.filter(m => !knownIds.has(m.id));
+                if (newMails.length > 0) {
+                    list.innerHTML = '';
+                    data.mails.forEach((mail, i) => {
+                        list.insertAdjacentHTML('beforeend', buildMailItem(mail, i));
+                        knownIds.add(mail.id);
+                    });
+                }
+            } catch (e) {}
+        }
+
+        window.addEventListener('load', function() {
+            setInterval(pollMails, 3000);
+        });
+
+        function openMenu() {
+            document.getElementById('side-drawer').classList.add('open');
+        }
+        function closeMenu() {
+            document.getElementById('side-drawer').classList.remove('open');
+        }
+
+</script>
+</head>
+
+<body>
+<div class="container">
+    <div class="content-area">
+    <div class="top">
+        <p id="current-time"></p>
+        <div class="time-back">
+           <div>
+             <h2>Hello, &#128075</h2>
+              <h1 id="name">{{ request.user.child_name}}</h1>
+            </div>
+            <button class="menu-btn" onclick="openMenu()">&#9776;</button>
+        </div>
+    </div>
+
+    <div class="side-drawer" id="side-drawer">
+        <button class="drawer-close" onclick="closeMenu()">&#10005;</button>
+        <ul class="drawer-menu">
+            <li><a href="{% url 'edit_profile' %}">&#9998; Edit Profile</a></li>
+            <li><a href="{% url 'manage_subscription' %}">&#11088; Manage Your Subscription</a></li>
+            <li><a href="{% url 'home_page' %}">&#128682; Logout</a></li>
+            <li><a href="{% url 'password_change' %}">&#128273; Change Password</a></li>
+
+        </ul>
+    </div>
+    <div class="sdpage">
+        <img src="{% static 'members/images/maindecor.png' %}" alt="Fairy Club Logo">
+    </div>
+    <div class="fairy-mail-section">
+        <div class="fairy-mail-header">
+            <h3>Fairy Mail</h3>
+            <div class="mail-pagination">
+                {% if page_obj.has_previous %}
+                    <a href="?page={{ page_obj.previous_page_number }}" class="mail-page-btn">&#8592;</a>
+                {% endif %}
+                <span class="mail-page-info">{{ page_obj.number }}/{{ page_obj.paginator.num_pages }}</span>
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}" class="mail-page-btn">&#8594;</a>
+                {% endif %}
+            </div>
+        </div>
+        <div class="fairy-mail-list">
+            {% for mail, img in mail_list %}
+            <div class="fairy-mail-item" data-mail-id="{{ mail.id }}">
+                <div class="fairy-avatar">
+                    <img src="{% static 'members/images/' %}{{ img }}" alt="fairy">
+                </div>
+                <div class="fairy-mail-content">
+                    <div class="fairy-mail-top">
+                        <span class="fairy-name">{{ mail.mailtitel }}</span>
+                        <span class="mail-time">This Week</span>
+                    </div>
+                    <p class="mail-preview">{{ mail.mailbody }}</p>
+                    <a href="{% url 'reply_mail' mail.id %}" class="reply-btn">&#8617; Reply</a>
+                </div>
+            </div>
+            {% empty %}
+            <p class="no-mail">No fairy mail yet!</p>
+            {% endfor %}
+        </div>
+    </div>
+
+    </div><!-- end content-area -->
+
+    <!-- Bottom Navigation Bar -->
+    <div class="bottom-nav">
+        <div class="bottom-nav-bar">
+            <a href="#" class="nav-item active">
+                <div class="nav-icon-wrap active-wrap">
+                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5z"/><polyline points="9 21 9 12 15 12 15 21"/></svg>
+                </div>
+            </a>
+            <a href="#" class="nav-item">
+                <div class="nav-icon-wrap">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="18" height="14" rx="2"/><circle cx="17" cy="5" r="2" fill="currentColor" stroke="none"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                </div>
+            </a>
+            <div class="nav-plus-spacer"></div>
+            <a href="{% url 'podcast' %}" class="nav-item">
+                <div class="nav-icon-wrap">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2"/><path d="M16.24 7.76a6 6 0 0 1 0 8.49"/><path d="M7.76 7.76a6 6 0 0 0 0 8.49"/><path d="M20.07 4.93a10 10 0 0 1 0 14.14"/><path d="M3.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+                </div>
+            </a>
+            <a href="{% url 'profile_page' %}" class="nav-item">
+                <div class="nav-icon-wrap">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+                </div>
+            </a>
+        </div>
+        <button class="nav-plus-btn">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </button>
+    </div>
+
+</div>
+
+</body>
+</html>
