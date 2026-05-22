@@ -15,7 +15,7 @@ A fully-featured full-stack web application built with **Django**. Fairy Club is
 - **Global Mail** — Send and receive messages within the platform
 - **Real-time** — WebSocket support via Django Channels & Daphne
 - **Media uploads** — Profile pictures and podcast files via Pillow
-
+ 
 ---
 
 ## Tech Stack
